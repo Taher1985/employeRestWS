@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.demo.emp.model.ResponseDetail;
+import com.demo.emp.model.ErrorResponse;
 import com.demo.emp.util.EmployeeUtil;
 
 
@@ -19,26 +19,26 @@ import com.demo.emp.util.EmployeeUtil;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(EmptyResultDataAccessException.class)
-	public @ResponseBody ResponseEntity<ResponseDetail> handleEmptyResultDataAccessException(EmptyResultDataAccessException exception, HttpServletRequest request) {
-		ResponseDetail error = new ResponseDetail();
+	public @ResponseBody ResponseEntity<ErrorResponse> handleEmptyResultDataAccessException(EmptyResultDataAccessException exception, HttpServletRequest request) {
+		ErrorResponse error = new ErrorResponse();
 		HttpStatus status = EmployeeUtil.getStatus(request);
 		error.setErrorCode(status.value());
 		error.setMessage("No Records found");
-		return new ResponseEntity<ResponseDetail>(error, HttpStatus.OK);
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(SQLException.class)
-	public @ResponseBody ResponseEntity<ResponseDetail> handleSQLException(SQLException exception, HttpServletRequest request) {
-		ResponseDetail error = new ResponseDetail();
+	public @ResponseBody ResponseEntity<ErrorResponse> handleSQLException(SQLException exception, HttpServletRequest request) {
+		ErrorResponse error = new ErrorResponse();
 		HttpStatus status = EmployeeUtil.getStatus(request);
 		if(exception instanceof SQLException) {
 			error.setErrorCode(status.value());
 			error.setMessage(exception.getMessage());
-			return new ResponseEntity<ResponseDetail>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ErrorResponse>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		error.setErrorCode(status.value());
 		error.setMessage(exception.getMessage());
-		return new ResponseEntity<ResponseDetail>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
