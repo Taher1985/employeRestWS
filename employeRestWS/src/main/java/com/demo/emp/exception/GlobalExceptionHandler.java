@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
 		HttpStatus status = EmployeeUtil.getStatus(request);
 		error.setErrorCode(status.value());
 		error.setMessage("No Records found");
-		error.setExceptionDetail(exception.getMessage());
 		return new ResponseEntity<ResponseDetail>(error, HttpStatus.OK);
 	}
 	
@@ -34,11 +33,11 @@ public class GlobalExceptionHandler {
 		HttpStatus status = EmployeeUtil.getStatus(request);
 		if(exception instanceof SQLException) {
 			error.setErrorCode(status.value());
-			error.setExceptionDetail(exception.getMessage());
+			error.setMessage(exception.getMessage());
 			return new ResponseEntity<ResponseDetail>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		error.setErrorCode(status.value());
-		error.setExceptionDetail(exception.getMessage());
+		error.setMessage(exception.getMessage());
 		return new ResponseEntity<ResponseDetail>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
