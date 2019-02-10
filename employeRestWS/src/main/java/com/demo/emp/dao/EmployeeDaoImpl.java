@@ -65,11 +65,17 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public int updateEmployee(Employee employee) throws Exception {
 		LOG.info("In dao update()");
 		int record;
-		String query = "update employee set EMP_NAME = ?, EMAIL_ID = ?, CITY = ?, COMPANY = ?, DATE_OF_JOINING = ? where EMP_ID = ?";
-		record = jdbcTemplate.update(query, employee.getEmployeeName(), employee.getEmployeeEmail(),
-				employee.getEmployeeCity(), employee.getEmployeeCompany(), employee.getEmployeeDOJ(),
-				employee.getEmployeeId());
-		return record;
+		Employee empExist = getEmployee(employee.getEmployeeId());
+		if (empExist != null) {
+			String query = "update employee set EMP_NAME = ?, EMAIL_ID = ?, CITY = ?, COMPANY = ?, DATE_OF_JOINING = ? where EMP_ID = ?";
+			record = jdbcTemplate.update(query, employee.getEmployeeName(), employee.getEmployeeEmail(),
+					employee.getEmployeeCity(), employee.getEmployeeCompany(), employee.getEmployeeDOJ(),
+					employee.getEmployeeId());
+			return record;
+		} else {
+			throw new EmptyResultDataAccessException("No Records found", 0);
+		}
+
 	}
 
 	@Override

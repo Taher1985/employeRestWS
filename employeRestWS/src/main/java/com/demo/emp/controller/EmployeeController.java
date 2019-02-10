@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.emp.model.Employee;
-import com.demo.emp.model.ErrorResponse;
+import com.demo.emp.model.EmployeeErrorResponse;
 import com.demo.emp.service.EmployeeService;
 
 @RestController
@@ -44,29 +44,29 @@ public class EmployeeController {
 	}
 
 	@RequestMapping(value = "/addEmployee", method = RequestMethod.POST)
-	public ResponseEntity<ErrorResponse> addEmployee(@RequestBody Employee employee) throws Exception {
+	public ResponseEntity<EmployeeErrorResponse> addEmployee(@RequestBody Employee employee) throws Exception {
 		LOG.info("In addEmployee()");
-		ErrorResponse response = new ErrorResponse();
+		EmployeeErrorResponse response = new EmployeeErrorResponse();
 		employee = employeeService.addEmployee(employee);
 		response.setMessage("Employee ID " + employee.getEmployeeId() + " added");
-		return new ResponseEntity<ErrorResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<EmployeeErrorResponse>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/updateEmployee", method = RequestMethod.PUT)
-	public ResponseEntity<ErrorResponse> updateEmployee(@RequestBody Employee employee) throws Exception {
+	public ResponseEntity<EmployeeErrorResponse> updateEmployee(@RequestBody Employee employee) throws Exception {
 		LOG.info("In updateEmployee()");
-		ErrorResponse response = new ErrorResponse();
+		EmployeeErrorResponse response = new EmployeeErrorResponse();
 		employeeService.updateEmployee(employee);
 		response.setMessage("Employee ID " + employee.getEmployeeId() + " updated");
-		return new ResponseEntity<ErrorResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<EmployeeErrorResponse>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/deleteEmployee/{employeeId}", method = RequestMethod.DELETE)
-	public ResponseEntity<ErrorResponse> deleteEmployee(@PathVariable String employeeId) throws Exception {
+	public ResponseEntity<EmployeeErrorResponse> deleteEmployee(@PathVariable String employeeId) throws Exception {
 		LOG.info("In deleteEmployee()");
-		ErrorResponse response = new ErrorResponse();
+		EmployeeErrorResponse response = new EmployeeErrorResponse();
 		employeeService.deleteEmployee(employeeId);
 		response.setMessage("Employee ID " + employeeId + " deleted");
-		return new ResponseEntity<ErrorResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<EmployeeErrorResponse>(response, HttpStatus.OK);
 	}
 }
